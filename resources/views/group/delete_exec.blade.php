@@ -1,6 +1,6 @@
 @extends('layouts.template')
 @section('title')
-結果画面
+グループ一覧 - 削除画面
 @endsection
 
 @section('content')

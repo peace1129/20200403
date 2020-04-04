@@ -29,7 +29,7 @@
     </tr>
     @foreach($rData as $d)
     <tr>
-      <td>{{$d->氏名}}</td>
+      <td>{{$d->苗字}}{{$d->名前}}</td>
       <td>
         @if ($d->性別 === "1")
           男性
@@ -49,11 +49,10 @@
       <td>
         <div style="display:inline-flex">
           <form action="/roster/edit">
-            <button type="submit" class="btn btn-primary" value="{{$d->user_id}}" name="userId" formmethod="get"">編集</button>
+            <button type="submit" class="btn btn-primary" value="{{$d->user_id}}" name="user_id">編集</button>
           </form>
-          <form action="/roster/delete" method="POST">
-            {{ csrf_field() }}
-            <button type="submit" class="btn btn-primary" value="{{$d->user_id}}" name="userId">削除</button>
+          <form action="/roster/delete" method="get">
+            <button type="submit" class="btn btn-primary" value="{{$d->user_id}}" name="user_id">削除</button>
           </form>
         </div>
       </td>

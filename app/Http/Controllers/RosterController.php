@@ -71,6 +71,7 @@ class RosterController extends Controller
         'address'         => 'required'
       ]);
 
+      $request->session()->put('middleName', $request->input('user_id'));
       $request->session()->put('middleName', $request->input('middleName'));
       $request->session()->put('name', $request->input('name'));
       $request->session()->put('gender', $request->input('gender'));
@@ -87,11 +88,12 @@ class RosterController extends Controller
       $roster = new Roster();
 
       $roster->create([
-        '氏名' => $request->session()->get('middleName') . $request->session()->get('name'),
-        '性別' => $request->session()->get('gender'),
-        '住所' => $request->session()->get('address'),
-        '都道府県' => $request->session()->get('pref'),
-        'グループ名' => $request->session()->get('grpName'),
+        '苗字' => $request->session()->pull('middleName'),
+        '名前' => $request->session()->pull('name'),
+        '性別' => $request->session()->pull('gender'),
+        '住所' => $request->session()->pull('address'),
+        '都道府県' => $request->session()->pull('pref'),
+        'グループ名' => $request->session()->pull('grpName'),
       ]);
 
       $rData = $roster->getRosterData();
@@ -105,10 +107,11 @@ class RosterController extends Controller
 
     // 名簿一覧編集ボタン押下時処理
     public function edit(Request $request){
-      $userId = $request->input('userId');
+
+      $request->session()->put('user_id', $request->input('user_id'));
+      $userId = $request->input('user_id');
       $roster = new Roster();
       $uData = $roster->getUserData($userId);
-
       $gList = $roster->getGroupList();
 
       $prefList = json_decode(file_get_contents('http://geoapi.heartrails.com/api/json?method=getPrefectures'), true);
@@ -122,22 +125,57 @@ class RosterController extends Controller
     }
 
 
+    // 名簿一覧編集ボタン押下時処理
+    public function editChk(Request $request){
+      $request->validate([
+        'middleName'      => 'required|max:10',
+        'name'            => 'required|max:10',
+        'gender'          => 'required',
+        'pref'            => 'required',
+        'address'         => 'required'
+      ]);
+
+      $request->session()->put('middleName', $request->input('middleName'));
+      $request->session()->put('name', $request->input('name'));
+      $request->session()->put('gender', $request->input('gender'));
+      $request->session()->put('address', $request->input('address'));
+      $request->session()->put('pref', $request->input('pref'));
+      $request->session()->put('grpName', $request->input('grpName'));
+
+      return view('roster.edit_exec');
+    }
+
+    // 名簿一覧編集処理
+    public function editExec(Request $request){
+      $roster = new Roster();
+      $userId = $request->session()->pull('user_id');
+
+      Roster::where('user_id',$userId )
+          ->update(['苗字' => $request->session()->pull('middleName'),
+                    '名前' => $request->session()->pull('name'),
+                    '性別' => $request->session()->pull('gender'),
+                    '都道府県' => $request->session()->pull('pref'),
+                    '住所' => $request->session()->pull('address'),
+                    'グループ名' => $request->session()->pull('grpName')
+                  ]);
+
+      return view('roster.completed');
+    }
+
     // 名簿一覧削除ボタン押下時処理
     public function delete(Request $request){
       $roster = new Roster();
-      $userId = $request->input('userId');
+      $request->session()->put('user_id', $request->input('user_id'));
+      $uData = $roster->getUserData($request->input('user_id'));
 
-      // 指定ユーザIDの名簿を削除
-      $rData = $roster->deleteUserId($userId);
+      return view('roster.delete_exec',['uData' => $uData]);
+    }
 
-      // 画面再表示テーブル再取得
-      $gList = $roster->getGroupList();
-      $rData = $roster->getRosterData();
+    // 名簿削除確定処理
+    public function deleteExec(Request $request){
+      $roster = new Roster();
+      $roster->deleteUserId($request->session()->pull('user_id'));
 
-      return view('roster.index',[
-        'rData' => $rData,
-        'gList' => $gList
-
-      ]);
+      return view('roster.completed');
     }
 }

@@ -19,7 +19,6 @@ class GroupController extends Controller
   public function create(){
 
     return view('group.create');
-
   }
 
   // グループ名重複チェックボタン押下時処理
@@ -33,6 +32,7 @@ class GroupController extends Controller
     return view('group.create_exec');
   }
 
+  // 新規グループ名作成処理
   public function createExec(Request $request){
       $group = new Group();
       $group->create([
@@ -43,4 +43,46 @@ class GroupController extends Controller
 
       return view('group.index',['gData' => $gData]);
   }
+
+  //
+  public function edit(Request $request){
+      $request->session()->put('grpName', $request->input('grpName'));
+
+
+      return view('group.edit');
+  }
+
+
+  public function editChk(Request $request){
+    $request->validate([
+      'grpName'      => 'required|max:10|unique:groups,グループ名'
+    ]);
+    $request->session()->put('grpName', $request->input('grpName'));
+
+    return view('group.edit_exec');
+  }
+
+  public function editExec(Request $request){
+    $group = new Group();
+    $group->create([
+      'グループ名' => $request->session()->get('grpName')
+    ]);
+
+    return view('group.completed');
+  }
+
+  public function delete(Request $request){
+    $request->session()->put('grpName', $request->input('grpName'));
+
+    return view('group.delete');
+  }
+
+  public function deleteExec(Request $request){
+    $group = new Group();
+    $group->deleteGrp($request->session()->get('grpName'));
+
+
+    return view('group.completed');
+  }
+
 }

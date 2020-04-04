@@ -25,34 +25,27 @@ class Group extends Model
                         .'GROUP BY グループ名 '
                         .'ORDER BY グループ名');
 
-    // $data1 = DB::table('rosters')
-    //               ->selectRaw('グループ名, count(*) AS 所属数')
-    //               ->groupBy('グループ名')
-    //               ->get();
+    // $roster = DB::table('rosters')
+    //               ->selectRaw('グループ名, count(*) as 所属数')
+    //               ->groupBy('グループ名');
     //
     //
-    // $data2 = DB::table('groups')
-    //               ->selectRaw('グループ名, 0 AS 所属数')
-    //               ->groupBy('グループ名')
-    //               ->get();
-    //
-    //
-    // $users = DB::table('users')
-    //         ->whereNull('last_name')
-    //         ->union($data1)
-    //         ->union($data2)
+    // $result = DB::table('groups')
+    //         ->selectRaw('グループ名, 0 as 所属数')
+    //         ->union($roster)
+    //         ->whereNotNull('グループ名')
     //         ->get();
     //
     //
-    // dd($data3);
+    //
+    // dd($result);
 
     return $GrpCnt;
   }
 
-  // グループ名追加
-  public function insGrp($newGrpName){
-
+  // グループテーブルの指定グループ名のレコードを削除
+  public function deleteGrp($grpName)
+  {
+    Group::find($grpName)->delete();
   }
-
-
 }

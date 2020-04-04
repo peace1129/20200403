@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class Roster extends Model
 {
-  protected $primaryKey = 'userId';
+  protected $primaryKey = 'user_id';
   protected $table = 'rosters';
 
   protected $fillable = [
-    '氏名', '性別', '都道府県', '住所', 'グループ名',
+    '苗字','名前', '性別', '都道府県', '住所', 'グループ名',
   ];
 
   // 名簿一覧テーブル表示用データの取得
@@ -21,6 +21,7 @@ class Roster extends Model
     return $data;
   }
 
+  // グループ名取得
   public function getSelectGrpList($grp){
     $data = DB::table($this->table)->where('グループ名', $grp)->get();
 
@@ -29,7 +30,7 @@ class Roster extends Model
 
   // 重複したグループを削除したデータの取得
   public function getGroupList(){
-    $data = DB::select("SELECT DISTINCT(グループ名) FROM groups");
+    $data = DB::table('groups')->distinct('グループ名')->get();
     return $data;
   }
 
@@ -43,6 +44,6 @@ class Roster extends Model
   // 名簿一覧テーブルの指定userIdのレコードを削除
   public function deleteUserId($userId)
   {
-    DB::table($this->table)->where('user_id', '=', $userId)->delete();
+    Roster::find($userId)->delete();
   }
 }

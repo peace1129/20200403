@@ -14,10 +14,10 @@ class CreateGroupsTable extends Migration
     public function up()
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->Increments('id');
-            $table->string('グループ名');
+            $table->Increments('id')->unique();
+            $table->string('グループ名')->unique()->nullable();
             $table->timestamps();
-            
+
         });
     }
 

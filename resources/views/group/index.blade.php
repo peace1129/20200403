@@ -20,11 +20,22 @@
       <tr>
         <th>グループ</th>
         <th>所属数</th>
+        <th></th>
       </tr>
       @foreach($gData as $d)
       <tr>
         <td>{{$d->グループ名}}</td>
         <td>{{$d->所属数}}</td>
+        <td>
+          <div style="display:inline-flex">
+            <form action="/group/edit" method="get">
+              <button type="submit" class="btn btn-primary" value="{{$d->グループ名}}" name="grpName">編集</button>
+            </form>
+            <form action="/group/delete" method="get">
+              <button type="submit" class="btn btn-primary" value="{{$d->グループ名}}" name="grpName">削除</button>
+            </form>
+          </div>
+        </td>
       </tr>
       @endforeach
     </table>

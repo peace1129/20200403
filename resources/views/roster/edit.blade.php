@@ -17,15 +17,15 @@
   </div>
 @endif
 
-<form action="/roster/createChk" method="get">
+<form action="/roster/editChk" method="get">
   <div class="container-fluid">
-    <div class="row">
+    <div class="row md-5">
       <div class="col-md-1">
         <label>氏名</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-5" type="text" name="middleName" placeholder="{{$uData->氏名}}">
-        <input class="col-md-5" type="text" name="name" value="{{ old('name') }}">
+        <input class="col-md-5" type="text" name="middleName" value="{{ old('middleName',$uData->苗字) }}">
+        <input class="col-md-5" type="text" name="name" value="{{ old('name',$uData->名前) }}">
       </div>
     </div>
 
@@ -48,7 +48,7 @@
         <label>都道府県</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-10" name="pref" type="text" class="textField" id="tField3" list="prefCmbList" placeholder="{{$uData->都道府県}}">
+        <input class="col-md-10" name="pref" type="text" class="textField" id="tField3" list="prefCmbList" value="{{ old('pref',$uData->都道府県) }}">
         <datalist id="prefCmbList">
           @foreach($prefCollection as $bufList1)
             @foreach($bufList1 as $bufList2)
@@ -67,7 +67,7 @@
         <label>住所</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-10" type="text" name="address" placeholder="{{$uData->住所}}">
+        <input class="col-md-10" type="text" name="address" value="{{ old('address',$uData->住所) }}">
       </div>
     </div>
 
@@ -76,7 +76,7 @@
         <label>グループ</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-10" name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" placeholder="{{$uData->グループ名}}">
+        <input class="col-md-10" name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" value="{{ old('grpName',$uData->グループ名) }}">
         <datalist id="grpCmbList">
           @foreach($gList as $d)
             <option value="{{$d->グループ名}}">
