@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Group extends Model
 {
-  protected $primaryKey = 'グループ名';
+  // protected $primaryKey = 'グループ名';
   protected $table = 'groups';
 
   protected $fillable = [

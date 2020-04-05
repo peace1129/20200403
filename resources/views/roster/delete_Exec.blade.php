@@ -39,7 +39,7 @@
         <label>都道府県</lavel>
       </div>
       <div>
-        {{ Session::get('pref') }}
+        {{ $uData->都道府県 }}
       </div>
     </div>
 
@@ -47,14 +47,14 @@
       <div class="col-md-1">
         <label>住所</lavel>
       </div>
-      {{ Session::get('address') }}
+      {{ $uData->住所 }}
     </div>
 
     <div class="row">
       <div class="col-md-1">
         <label>グループ</lavel>
       </div>
-      {{ Session::get('grpName') }}
+      {{ $uData->グループ名 }}
     </div>
 
   </div>

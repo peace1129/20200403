@@ -27,32 +27,32 @@
     <th>グループ</th>
     <th></th>
     </tr>
-    @foreach($rData as $d)
+    @foreach($rData as $data)
     <tr>
-      <td>{{$d->苗字}}{{$d->名前}}</td>
+      <td>{{$data->苗字}}{{$data->名前}}</td>
       <td>
-        @if ($d->性別 === "1")
+        @if ($data->性別 === "1")
           男性
         @else
           女性
         @endif
       </td>
-      <td>{{$d->都道府県}}{{$d->住所}}</td>
+      <td>{{$data->都道府県}}{{$data->住所}}</td>
       <td>
-        @if ($d->グループ名 === "")
+        @if ($data->グループ名 === "")
           所属なし
         @else
 
-          {{$d->グループ名}}
+          {{$data->グループ名}}
         @endif
       </td>
       <td>
         <div style="display:inline-flex">
           <form action="/roster/edit">
-            <button type="submit" class="btn btn-primary" value="{{$d->user_id}}" name="user_id">編集</button>
+            <button type="submit" class="btn btn-primary" value="{{$data->user_id}}" name="user_id">編集</button>
           </form>
           <form action="/roster/delete" method="get">
-            <button type="submit" class="btn btn-primary" value="{{$d->user_id}}" name="user_id">削除</button>
+            <button type="submit" class="btn btn-primary" value="{{$data->user_id}}" name="user_id">削除</button>
           </form>
         </div>
       </td>

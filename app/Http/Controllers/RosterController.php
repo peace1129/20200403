@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Roster;
 use App\Group;
-use Illuminate\Http\Request;
+use Request;
 use Illuminate\Support\Collection;
 
 // 名簿管理クラス
@@ -13,9 +13,8 @@ class RosterController extends Controller
 
     // 名簿一覧表示時処理
     public function index(){
-      $roster = new Roster();
-      $rData = $roster->getRosterData();
-      $gList = $roster->getGroupList();
+      $rData = Roster::all();
+      $gList = Group::get('グループ名');
 
       return view('roster.index',[
         'rData'=>$rData,
@@ -25,17 +24,14 @@ class RosterController extends Controller
 
 
     // 名簿一覧グループ検索ボタン押下時処理
-    public function group_search(Request $request){
-      $grp = $request->input('selectGrp');
-      $roster = new Roster();
-      $gList = $roster->getGroupList();
+    public function group_search(){
+      $grp = Request::input('selectGrp');
+      $gList = Group::get('グループ名');
 
       if (is_null($grp)){
-        $rData = $roster->getRosterData();
-
+        $rData = Roster::all();
       }else{
-        $rData = $roster->getSelectGrpList($grp);
-
+        $rData = Roster::where('グループ名', $grp)->get();
       }
 
       return view('roster.index',[
@@ -47,8 +43,7 @@ class RosterController extends Controller
 
     // 名簿一覧新規登録ボタン押下時処理
     public function create(){
-      $roster = new Roster();
-      $gList = $roster->getGroupList();
+      $gList = Group::get('グループ名');
 
       //都道府県取得APIの読み込み
       $prefList = json_decode(file_get_contents('http://geoapi.heartrails.com/api/json?method=getPrefectures'), true);
@@ -62,8 +57,8 @@ class RosterController extends Controller
 
 
     // 名簿一覧の新規登録画面に名簿情報が入力された状態で登録ボタンが押下された場合の処理
-    public function createChk(Request $request){
-      $request->validate([
+    public function createChk(){
+      Request::validate([
         'middleName'      => 'required|max:10',
         'name'            => 'required|max:10',
         'gender'          => 'required',
@@ -71,29 +66,27 @@ class RosterController extends Controller
         'address'         => 'required'
       ]);
 
-      $request->session()->put('middleName', $request->input('user_id'));
-      $request->session()->put('middleName', $request->input('middleName'));
-      $request->session()->put('name', $request->input('name'));
-      $request->session()->put('gender', $request->input('gender'));
-      $request->session()->put('address', $request->input('address'));
-      $request->session()->put('pref', $request->input('pref'));
-      $request->session()->put('grpName', $request->input('grpName'));
+      Request::session()->put('user_id', Request::input('user_id'));
+      Request::session()->put('middleName', Request::input('middleName'));
+      Request::session()->put('name', Request::input('name'));
+      Request::session()->put('gender', Request::input('gender'));
+      Request::session()->put('address', Request::input('address'));
+      Request::session()->put('pref', Request::input('pref'));
+      Request::session()->put('grpName', Request::input('grpName'));
 
        return view('roster.create_exec');
     }
 
 
     // 名簿一覧追加処理
-    public function createExec(Request $request){
-      $roster = new Roster();
-
-      $roster->create([
-        '苗字' => $request->session()->pull('middleName'),
-        '名前' => $request->session()->pull('name'),
-        '性別' => $request->session()->pull('gender'),
-        '住所' => $request->session()->pull('address'),
-        '都道府県' => $request->session()->pull('pref'),
-        'グループ名' => $request->session()->pull('grpName'),
+    public function createExec(){
+      Roster::create([
+        '苗字' => Request::session()->pull('middleName'),
+        '名前' => Request::session()->pull('name'),
+        '性別' => Request::session()->pull('gender'),
+        '住所' => Request::session()->pull('address'),
+        '都道府県' => Request::session()->pull('pref'),
+        'グループ名' => Request::session()->pull('grpName'),
       ]);
 
       $rData = $roster->getRosterData();
@@ -106,13 +99,11 @@ class RosterController extends Controller
 
 
     // 名簿一覧編集ボタン押下時処理
-    public function edit(Request $request){
+    public function edit(){
+      Request::session()->put('user_id', Request::input('user_id'));
 
-      $request->session()->put('user_id', $request->input('user_id'));
-      $userId = $request->input('user_id');
-      $roster = new Roster();
-      $uData = $roster->getUserData($userId);
-      $gList = $roster->getGroupList();
+      $uData = Roster::where('user_id', Request::input('user_id'))->first();
+      $gList = Group::get('グループ名');
 
       $prefList = json_decode(file_get_contents('http://geoapi.heartrails.com/api/json?method=getPrefectures'), true);
       $prefCollection = collect($prefList);
@@ -126,8 +117,8 @@ class RosterController extends Controller
 
 
     // 名簿一覧編集ボタン押下時処理
-    public function editChk(Request $request){
-      $request->validate([
+    public function editChk(){
+      Request::validate([
         'middleName'      => 'required|max:10',
         'name'            => 'required|max:10',
         'gender'          => 'required',
@@ -135,46 +126,41 @@ class RosterController extends Controller
         'address'         => 'required'
       ]);
 
-      $request->session()->put('middleName', $request->input('middleName'));
-      $request->session()->put('name', $request->input('name'));
-      $request->session()->put('gender', $request->input('gender'));
-      $request->session()->put('address', $request->input('address'));
-      $request->session()->put('pref', $request->input('pref'));
-      $request->session()->put('grpName', $request->input('grpName'));
+      Request::session()->put('middleName', Request::input('middleName'));
+      Request::session()->put('name', Request::input('name'));
+      Request::session()->put('gender', Request::input('gender'));
+      Request::session()->put('address', Request::input('address'));
+      Request::session()->put('pref', Request::input('pref'));
+      Request::session()->put('grpName', Request::input('grpName'));
 
       return view('roster.edit_exec');
     }
 
     // 名簿一覧編集処理
-    public function editExec(Request $request){
-      $roster = new Roster();
-      $userId = $request->session()->pull('user_id');
-
-      Roster::where('user_id',$userId )
-          ->update(['苗字' => $request->session()->pull('middleName'),
-                    '名前' => $request->session()->pull('name'),
-                    '性別' => $request->session()->pull('gender'),
-                    '都道府県' => $request->session()->pull('pref'),
-                    '住所' => $request->session()->pull('address'),
-                    'グループ名' => $request->session()->pull('grpName')
+    public function editExec(){
+      Roster::where('user_id', Request::session()->pull('user_id'))
+          ->update(['苗字' => Request::session()->pull('middleName'),
+                    '名前' => Request::session()->pull('name'),
+                    '性別' => Request::session()->pull('gender'),
+                    '都道府県' => Request::session()->pull('pref'),
+                    '住所' => Request::session()->pull('address'),
+                    'グループ名' => Request::session()->pull('grpName')
                   ]);
 
       return view('roster.completed');
     }
 
     // 名簿一覧削除ボタン押下時処理
-    public function delete(Request $request){
-      $roster = new Roster();
-      $request->session()->put('user_id', $request->input('user_id'));
-      $uData = $roster->getUserData($request->input('user_id'));
+    public function delete(){
+      Request::session()->put('user_id', Request::input('user_id'));
+      $uData = Roster::where('user_id', Request::input('user_id'))->first();
 
       return view('roster.delete_exec',['uData' => $uData]);
     }
 
     // 名簿削除確定処理
-    public function deleteExec(Request $request){
-      $roster = new Roster();
-      $roster->deleteUserId($request->session()->pull('user_id'));
+    public function deleteExec(){
+      Roster::find(Request::session()->pull('user_id'))->delete();
 
       return view('roster.completed');
     }
