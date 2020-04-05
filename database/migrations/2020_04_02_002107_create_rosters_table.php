@@ -15,13 +15,19 @@ class CreateRostersTable extends Migration
     {
         Schema::create('rosters', function (Blueprint $table) {
             $table->Increments('user_id');
-            $table->string('苗字');
-            $table->string('名前');
-            $table->char('性別',1);
-            $table->string('住所');
-            $table->string('都道府県');
-            $table->string('グループ名')->nullable();
+            $table->string('lastName');
+            $table->string('firstName');
+            $table->char('gender',1);
+            $table->string('pref');
+            $table->string('address');
+            $table->string('grp_name')->unsigned();
             $table->timestamps();
+            
+            $table->foreign('grp_name')
+                  ->references('grp_name')
+                  ->on('groups')
+                  ->onDelete('set null')
+                  ->nullable();
         });
     }
 

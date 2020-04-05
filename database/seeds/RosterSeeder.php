@@ -12,21 +12,20 @@ class RosterSeeder extends Seeder
     public function run()
     {
       DB::table('rosters')->insert([
-         '性別' => '1',
-         '苗字' => 'お名前',
-         '名前' => '太郎',
-         '住所' => '金沢市',
-         '都道府県' => '石川県',
-         'グループ名' => 'グループA'
+         'lastName' => 'お名前',
+         'firstName' => '太郎',
+         'pref' => '石川県',
+         'address' => '金沢市',
+         'gender' => '1',
+         'grp_name' => 'グループA'
       ]);
 
       DB::table('rosters')->insert([
-        '苗字' => 'お名前',
-        '名前' => '花子',
-        '性別' => '2',
-        '住所' => '高岡市',
-        '都道府県' => '富山県',
-        'グループ名' => ''
-      ]);
+         'lastName' => 'お名前',
+         'firstName' => '花子',
+         'pref' => '富山県',
+         'address' => '高岡市',
+         'gender' => '2'
+       ]);
     }
 }

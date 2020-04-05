@@ -24,8 +24,8 @@
         <label>氏名</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-5" type="text" name="middleName" value="{{ old('middleName') }}">
-        <input class="col-md-5" type="text" name="name" value="{{ old('name') }}">
+        <input class="col-md-5" type="text" name="lastName" value="{{ old('lastName') }}">
+        <input class="col-md-5" type="text" name="firstName" value="{{ old('firstName') }}">
       </div>
     </div>
 
@@ -35,10 +35,10 @@
       </div>
       <div class="col-md-3">
         <label class="radio-inline">
-          <input type="radio" name="gender" value="1">男性
+          <input type="radio" name="gender" value="1" {{ old('gender') == '1' ? 'checked' : '' }}>男性
         </label>
         <label class="radio-inline">
-          <input type="radio" name="gender" value="2">女性
+          <input type="radio" name="gender" value="2" {{ old('gender') == '2' ? 'checked' : '' }}>女性
         </label>
       </div>
     </div>
@@ -79,7 +79,7 @@
         <input class="col-md-10" name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" value="{{ old('grpName') }}">
         <datalist id="grpCmbList">
           @foreach($gList as $d)
-            <option value="{{$d->グループ名}}">
+            <option value="{{$d->grp_name}}">
           @endforeach
         </datalist>
       </div>

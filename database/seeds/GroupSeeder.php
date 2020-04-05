@@ -12,15 +12,15 @@ class GroupSeeder extends Seeder
     public function run()
     {
       DB::table('groups')->insert([
-         'グループ名' => 'グループA'
+         'grp_name' => 'グループA'
       ]);
 
       DB::table('groups')->insert([
-         'グループ名' => 'グループB'
+         'grp_name' => 'グループB'
       ]);
 
       DB::table('groups')->insert([
-         'グループ名' => 'グループC'
+         'grp_name' => 'グループC'
       ]);
     }
 }

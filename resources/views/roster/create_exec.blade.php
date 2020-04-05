@@ -15,8 +15,8 @@
         <label>氏名</lavel>
       </div>
       <div>
-        {{ Session::get('middleName') }}
-        {{ Session::get('name') }}
+        {{ Session::get('lastName') }}
+        {{ Session::get('firstName') }}
       </div>
     </div>
 

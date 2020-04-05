@@ -24,8 +24,8 @@
         <label>氏名</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-5" type="text" name="middleName" value="{{ old('middleName',$uData->苗字) }}">
-        <input class="col-md-5" type="text" name="name" value="{{ old('name',$uData->名前) }}">
+        <input class="col-md-5" type="text" name="lastName" value="{{ old('lastName',$rData->lastName) }}">
+        <input class="col-md-5" type="text" name="firstName" value="{{ old('firstName',$rData->firstName) }}">
       </div>
     </div>
 
@@ -35,10 +35,10 @@
       </div>
       <div class="col-md-3">
         <label class="radio-inline">
-          <input type="radio" name="gender" value="1">男性
+          <input type="radio" name="gender" value="1" {{ old('gender',$rData->gender) == '1' ? 'checked' : '' }}>男性
         </label>
         <label class="radio-inline">
-          <input type="radio" name="gender" value="2">女性
+          <input type="radio" name="gender" value="2" {{ old('gender',$rData->gender) == '2' ? 'checked' : '' }}>女性
         </label>
       </div>
     </div>
@@ -48,7 +48,7 @@
         <label>都道府県</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-10" name="pref" type="text" class="textField" id="tField3" list="prefCmbList" value="{{ old('pref',$uData->都道府県) }}">
+        <input class="col-md-10" name="pref" type="text" class="textField" id="tField3" list="prefCmbList" value="{{ old('pref',$rData->pref) }}">
         <datalist id="prefCmbList">
           @foreach($prefCollection as $bufList1)
             @foreach($bufList1 as $bufList2)
@@ -67,7 +67,7 @@
         <label>住所</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-10" type="text" name="address" value="{{ old('address',$uData->住所) }}">
+        <input class="col-md-10" type="text" name="address" value="{{ old('address',$rData->address) }}">
       </div>
     </div>
 
@@ -76,10 +76,10 @@
         <label>グループ</lavel>
       </div>
       <div class="col-md-3">
-        <input class="col-md-10" name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" value="{{ old('grpName',$uData->グループ名) }}">
+        <input class="col-md-10" name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" value="{{ old('grpName',$rData->grp_name) }}">
         <datalist id="grpCmbList">
           @foreach($gList as $d)
-            <option value="{{$d->グループ名}}">
+            <option value="{{$d->grp_name}}">
           @endforeach
         </datalist>
       </div>

@@ -7,31 +7,32 @@ use Illuminate\Support\Facades\DB;
 
 class Group extends Model
 {
-  // protected $primaryKey = 'グループ名';
+  protected $primaryKey = 'grp_name';
+  public $incrementing = false;
   protected $table = 'groups';
 
   protected $fillable = [
-    'グループ名',
+    'grp_name',
   ];
 
   // グループテーブルをグループ名でGroupByしたデータの取得
   public function getGrpCnt()
   {
-    $GrpCnt = DB::select('SELECT グループ名,SUM(所属数) as 所属数 FROM ('
-                        .'(SELECT グループ名,COUNT(*) as 所属数 FROM rosters GROUP BY グループ名)'
+    $GrpCnt = DB::select('SELECT grp_name,SUM(grp_count) as grp_count FROM ('
+                        .'(SELECT grp_name,COUNT(*) as grp_count FROM rosters GROUP BY grp_name)'
                         .'UNION'
-                        .'( SELECT グループ名,0 as 所属数 FROM groups GROUP BY グループ名) ) as foo '
-                        .'WHERE グループ名 <> \'\' '
-                        .'GROUP BY グループ名 '
-                        .'ORDER BY グループ名');
+                        .'( SELECT grp_name,0 as grp_count FROM groups GROUP BY grp_name) ) as foo '
+                        .'WHERE grp_name <> \'\' '
+                        .'GROUP BY grp_name '
+                        .'ORDER BY grp_name');
 
     // $roster = DB::table('rosters')
-    //               ->selectRaw('グループ名, count(*) as 所属数')
+    //               ->selectRaw('グループ名, count(*) as grp_count')
     //               ->groupBy('グループ名');
     //
     //
     // $result = DB::table('groups')
-    //         ->selectRaw('グループ名, 0 as 所属数')
+    //         ->selectRaw('グループ名, 0 as grp_count')
     //         ->union($roster)
     //         ->whereNotNull('グループ名')
     //         ->get();
@@ -41,11 +42,5 @@ class Group extends Model
     // dd($result);
 
     return $GrpCnt;
-  }
-
-  // グループテーブルの指定グループ名のレコードを削除
-  public function deleteGrp($grpName)
-  {
-    Group::find($grpName)->delete();
   }
 }

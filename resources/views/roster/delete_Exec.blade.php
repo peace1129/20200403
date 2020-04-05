@@ -16,8 +16,8 @@
         <label>氏名</lavel>
       </div>
       <div>
-        {{ $uData->苗字 }}
-        {{ $uData->名前 }}
+        {{ $rData->lastName }}
+        {{ $rData->name }}
       </div>
     </div>
 
@@ -26,7 +26,7 @@
         <label>性別</lavel>
       </div>
       <div>
-        @if ( $uData->性別  === "1")
+        @if ( $rData->gender  === "1")
           男性
         @else
           女性
@@ -39,7 +39,7 @@
         <label>都道府県</lavel>
       </div>
       <div>
-        {{ $uData->都道府県 }}
+        {{ $rData->pref }}
       </div>
     </div>
 
@@ -47,14 +47,14 @@
       <div class="col-md-1">
         <label>住所</lavel>
       </div>
-      {{ $uData->住所 }}
+      {{ $rData->address }}
     </div>
 
     <div class="row">
       <div class="col-md-1">
         <label>グループ</lavel>
       </div>
-      {{ $uData->グループ名 }}
+      {{ $rData->grp_name }}
     </div>
 
   </div>

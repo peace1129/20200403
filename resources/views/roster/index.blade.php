@@ -4,13 +4,13 @@
 @endsection
 
 @section('content')
-  <p><label class="h2">グループ</label>
-    <form action="/roster/group_search" method="get" id="frm1">
+<form action="/roster/group_search" method="get" id="frm1">
+  <p>グループ
       <input name="selectGrp" type="text" class="textField" list="combolist" >
       <button type="submit" class="btn btn-primary" onclick="getText(3)">検索</button>
       <datalist id="combolist">
         @foreach($gList as $list)
-          <option value="{{$list->グループ名}}">
+          <option value="{{$list->grp_name}}">
         @endforeach
       </datalist>
 
@@ -29,30 +29,30 @@
     </tr>
     @foreach($rData as $data)
     <tr>
-      <td>{{$data->苗字}}{{$data->名前}}</td>
+      <td>{{$data->lastName}}{{$data->name}}</td>
       <td>
-        @if ($data->性別 === "1")
+        @if ($data->gender === "1")
           男性
         @else
           女性
         @endif
       </td>
-      <td>{{$data->都道府県}}{{$data->住所}}</td>
+      <td>{{$data->pref}}{{$data->address}}</td>
       <td>
-        @if ($data->グループ名 === "")
+        @if ($data->grp_name === "")
           所属なし
         @else
 
-          {{$data->グループ名}}
+          {{$data->grp_name}}
         @endif
       </td>
       <td>
         <div style="display:inline-flex">
           <form action="/roster/edit">
-            <button type="submit" class="btn btn-primary" value="{{$data->user_id}}" name="user_id">編集</button>
+            <button type="submit" class="btn btn-primary" value="{{$data->user_id}}" name="userId">編集</button>
           </form>
           <form action="/roster/delete" method="get">
-            <button type="submit" class="btn btn-primary" value="{{$data->user_id}}" name="user_id">削除</button>
+            <button type="submit" class="btn btn-primary" value="{{$data->user_id}}}" name="userId">削除</button>
           </form>
         </div>
       </td>
